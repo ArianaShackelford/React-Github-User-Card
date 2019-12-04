@@ -3,9 +3,11 @@ import axios from 'axios';
 import './App.css';
 
 import UserCard from './components/UserCard';
+import FollowerList from './components/FollowersList';
 class App extends React.Component {
   state = {
-    user: []
+    user: [],
+    followers: []
   }
 
   componentDidMount() {
@@ -16,12 +18,19 @@ class App extends React.Component {
       this.setState({ user: response.data });
     });
 
+    axios.get('https://api.github.com/users/arianashackelford/followers')
+    .then(response => {
+      console.log(response)
+      this.setState({ followers: response.data });
+    });
+
   }
   render(){
     return (
       <div className="App">
       <h1>Github User Cards</h1>
-      <UserCard user={user}/>
+      <UserCard user={this.state.user}/>
+      <FollowerList followers={this.state.followers}/>
       </div>
     );
   }
